@@ -166,13 +166,27 @@ button {
   flex: 1;
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: 2.5rem 3.25rem;
+  grid-template-areas:
+    "copy visual"
+    "actions visual";
+  gap: 1.5rem 3.25rem;
   align-items: center;
 }
 
 .copy {
+  grid-area: copy;
   min-width: 0;
   max-width: 36rem;
+  align-self: end;
+}
+
+.visual {
+  grid-area: visual;
+}
+
+.actions {
+  grid-area: actions;
+  align-self: start;
 }
 
 .name {
@@ -198,7 +212,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 }
 
 .social {
@@ -324,6 +338,7 @@ button {
   justify-content: center;
   align-items: flex-end;
   min-height: 460px;
+  align-self: center;
 }
 
 .visual-frame {
@@ -384,105 +399,169 @@ html[dir="ltr"] .portrait {
   color: #94a3b8;
 }
 
-/* ─── Responsive ─── */
-@media (max-width: 900px) {
+/* ─── Mobile < 650: content | photo, then compact action buttons ─── */
+@media (max-width: 650px) {
+  .shell {
+    width: calc(100% - 1.1rem);
+    padding: 0.85rem 0 1.25rem;
+  }
+
+  .topbar {
+    margin-bottom: 0.75rem;
+  }
+
   .hero {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    justify-items: center;
+    grid-template-columns: minmax(0, 1fr) 118px;
+    grid-template-areas:
+      "copy visual"
+      "actions actions";
+    column-gap: 0.75rem;
+    row-gap: 0.85rem;
+    align-items: start;
+  }
+
+  .copy {
+    max-width: none;
+    align-self: center;
   }
 
   .visual {
-    order: -1;
-    width: 100%;
-    min-height: 400px;
+    width: 118px;
+    min-height: 0;
+    height: 148px;
     justify-content: center;
+    align-items: flex-end;
+    align-self: center;
+    overflow: visible;
   }
 
   .visual-frame {
-    width: min(100%, 300px);
-    height: 400px;
-    margin-inline: auto;
+    width: 118px;
+    height: 148px;
+    margin-inline: 0;
   }
 
   .blue-layer,
   html[dir="ltr"] .blue-layer {
-    left: 10%;
-    right: 10%;
-    top: 5%;
-    bottom: 3%;
-  }
-
-  html[dir="ltr"] .blue-layer {
-    left: 10%;
-    right: 10%;
+    left: 8%;
+    right: 12%;
+    top: 6%;
+    bottom: 4%;
   }
 
   .portrait,
   html[dir="ltr"] .portrait,
   html[dir="rtl"] .portrait {
-    width: 80%;
-    height: 90%;
-    left: 0;
+    width: 78%;
+    height: 92%;
+  }
+
+  html[dir="rtl"] .portrait {
     right: 0;
-    inset-inline-start: auto;
-    inset-inline-end: auto;
-    margin-inline: auto;
+    left: auto;
   }
 
-  .copy {
-    width: 100%;
-    max-width: 28rem;
-    margin-inline: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .socials {
-    justify-content: center;
-  }
-
-  .actions {
-    grid-template-columns: 1fr;
-    width: 100%;
-  }
-
-  .tile {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    gap: 0.75rem;
-    text-align: center;
-    padding: 1.2rem 1.15rem;
-  }
-
-  .tile-icon {
-    margin-inline: 0;
-  }
-
-  .tile-body {
-    text-align: center;
-    align-items: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .shell {
-    width: calc(100% - 1.5rem);
-    padding-top: 1rem;
-  }
-
-  .visual {
-    min-height: 320px;
-  }
-
-  .visual-frame {
-    height: 320px;
+  html[dir="ltr"] .portrait {
+    left: auto;
+    right: 0;
   }
 
   .name {
-    font-size: 2.2rem;
+    font-size: clamp(1.2rem, 5vw, 1.5rem);
+    margin-bottom: 0.4rem;
+  }
+
+  .bio {
+    font-size: 0.78rem;
+    line-height: 1.55;
+    margin-bottom: 0.6rem;
+  }
+
+  .socials {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .social {
+    min-width: 34px;
+    min-height: 34px;
+    padding: 0.4rem;
+  }
+
+  .social svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem;
+    width: 100%;
+    align-self: stretch;
+  }
+
+  .tile {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 48px !important;
+    height: 48px !important;
+    max-height: 48px;
+    padding: 0 0.55rem;
+    text-align: start;
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
+
+  .tile-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .tile-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .tile-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: start;
+    align-items: flex-start;
+    gap: 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .tile-title {
+    font-size: 0.72rem;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .tile-kicker {
+    font-size: 0.58rem;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .tile-meta {
+    display: none;
+  }
+
+  .foot {
+    margin-top: 1.1rem;
   }
 }
 
